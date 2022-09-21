@@ -41,7 +41,6 @@ async function downloadAllData() {
   for (const key of Object.keys(networks)) {
     const network = networks[key]
     for (const dex of network.dexes) {
-      // https://api.covalenthq.com/v1/1/xy=k/uniswap_v2/pools/?quote-currency=USD&format=JSON&page-number=2&page-size=20&key=ckey_f2d3fd74f77c48b4aa6a9eaa44e
       const pageSize = 100
       let pageNumber = 0
       let hasMore = true
@@ -51,7 +50,7 @@ async function downloadAllData() {
           const url = `${ API }${ network.chainId }/xy=k/${ dex }/pools/${ query }`
           const res = await axios.get(url)
           console.log(`Retrieved data for ${ dex } on ${ key }...`)
-          const filepath = `data/${ key }_${ dex }_${ pageNumber }.json`
+          const filepath = `./api/data/${ key }_${ dex }_${ pageNumber }.json`
           writeFileSync(filepath, JSON.stringify(res.data))
           console.log(`Data saved to ${ filepath }`)
           console.log(`Has more data: ${res.data.data.pagination.has_more  }`)
@@ -78,20 +77,3 @@ downloadAllData()
 function sleep(seconds: number) {
   return new Promise(resolve => setTimeout(resolve, seconds * 1000))
 }
-
-// 3971902777179486792773
-// ----876543210987654321
-
-// async function main() {
-//   // const CHAIN_ID = '137' // Polygon
-//   // const DEX = 'quickswap'
-//   const CHAIN_ID = '1'
-//   // const DEX = 'sushiswap'
-//   const DEX = 'uniswap_v2'
-//   const res = await axios.get(`${ API }${ CHAIN_ID }/xy=k/${ DEX }/pools/?${ KEY }`)
-//   console.log(`RES: ${ res.status } ${ res.statusText }`)
-//   console.log('DATA:')
-//   console.log(res.data)
-//   console.log('EXAMPLE:')
-//   console.log(res.data.data.items[2])
-// }

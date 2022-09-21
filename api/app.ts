@@ -5,7 +5,7 @@ const PORT = 8999
 
 const app = express()
 
-const allData = JSON.parse(readFileSync('./data/all_data.json').toString())
+const allData = JSON.parse(readFileSync('./api/data/all_data.json').toString())
 
 app.get('/all-data', (req, res) => {
   return res.status(200).json(allData)

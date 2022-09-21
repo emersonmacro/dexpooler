@@ -23,17 +23,17 @@ interface Row {
 distillData()
 
 function distillData() {
-  const files = fs.readdirSync('./data')
+  const files = fs.readdirSync('./api/data')
   const allItems = []
   for (const file of files) {
     const rows = processFile(file)
     allItems.push(...rows)
   }
-  fs.writeFileSync('data/all_data.json', JSON.stringify(allItems))
+  fs.writeFileSync('./api/data/all_data.json', JSON.stringify(allItems))
 }
 
 function processFile(filepath: string): Row[] {
-  const file = fs.readFileSync(`./data/${ filepath }`)
+  const file = fs.readFileSync(`./api/data/${ filepath }`)
   const data = JSON.parse(file.toString())
   const rows: Row[] = []
   for (const item of data.data.items) {
@@ -65,60 +65,3 @@ function processFile(filepath: string): Row[] {
   }
   return rows
 }
-
-// const THRESHOLD = 1000
-
-// distillData()
-
-// function distillData() {
-//   console.log('[distillData]')
-//   const files = fs.readdirSync('./data')
-//   // console.log(files)
-//   // processFile(files[0])
-//   const totalStats = {
-//     total: 0,
-//     liquidityBelowThreshold: 0,
-//     volumeBelowThreshold: 0,
-//     bothBelowThreshold: 0,
-//   }
-//   for (const file of files) {
-//     const stats = processFile(file)
-//     totalStats.total += stats.total
-//     totalStats.liquidityBelowThreshold += stats.liquidityBelowThreshold
-//     totalStats.volumeBelowThreshold += stats.volumeBelowThreshold
-//     totalStats.bothBelowThreshold += stats.bothBelowThreshold
-//   }
-//   console.log('[distillData] total stats:')
-//   console.log(totalStats)
-// }
-
-// function processFile(filepath: string) {
-//   // console.log(`[processFile]`)
-//   const file = fs.readFileSync(`./data/${ filepath }`)
-//   const data = JSON.parse(file.toString())
-//   // console.log(data)
-//   // console.log(data.data.items[0])
-//   return runStats(data)
-// }
-
-// function runStats(data: any) {
-//   const stats = {
-//     total: 0,
-//     liquidityBelowThreshold: 0,
-//     volumeBelowThreshold: 0,
-//     bothBelowThreshold: 0,
-//   }
-//   for (const item of data.data.items) {
-//     stats.total++
-//     if (item.total_liquidity_quote < THRESHOLD) {
-//       stats.liquidityBelowThreshold++
-//     }
-//     if (item.volume_7d_quote < THRESHOLD) {
-//       stats.volumeBelowThreshold++
-//     }
-//     if (item.total_liquidity_quote < THRESHOLD && item.volume_7d_quote < THRESHOLD) {
-//       stats.bothBelowThreshold++
-//     }
-//   }
-//   return stats
-// }
